@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	instanceCallerDepth  = 7
-	singletonCallerDepth = 8
+	instanceCallerDepth = 7
+	// singletonCallerDepth = 8
 )
 
 // kit is an implementation of Logger using go-kit
