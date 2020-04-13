@@ -10,6 +10,10 @@ This package can be used for production-ready logging in Go applications.
 It hides the complexity of configuring and using the state-of-the-arts loggers
 by providing a **single interface** that is _east-to-use_ and _hard-to-misuse_!
 
+## Supported Loggers
+
+  - [go-kit](https://github.com/go-kit/kit/tree/master/log)
+
 
 [godoc-url]: https://pkg.go.dev/github.com/moorara/log
 [godoc-image]: https://godoc.org/github.com/moorara/log?status.svg
