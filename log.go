@@ -1,3 +1,5 @@
+// Package log provides leveled structured loggers.
+// It hides the complexity of configuring and using the state-of-the-arts loggers by providing a single interface.
 package log
 
 import "strings"
