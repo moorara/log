@@ -5,25 +5,25 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	log "go.uber.org/zap"
-	core "go.uber.org/zap/zapcore"
+	zaplog "go.uber.org/zap"
+	zapcore "go.uber.org/zap/zapcore"
 )
 
 // mockZapLogger is a mock implementation of zapLogger.
 type mockZapLogger struct {
-	SugarOutSugaredLogger *log.SugaredLogger
+	SugarOutSugaredLogger *zaplog.SugaredLogger
 }
 
-func (m *mockZapLogger) Sugar() *log.SugaredLogger {
+func (m *mockZapLogger) Sugar() *zaplog.SugaredLogger {
 	return m.SugarOutSugaredLogger
 }
 
 // mockZapSugaredLogger is a mock implementation of zapSugaredLogger.
 type mockZapSugaredLogger struct {
 	SyncOutError         error
-	DesugarOutLogger     *log.Logger
+	DesugarOutLogger     *zaplog.Logger
 	WithInArgs           []interface{}
-	WithOutSugaredLogger *log.SugaredLogger
+	WithOutSugaredLogger *zaplog.SugaredLogger
 	DebugwInMsg          string
 	DebugwInKV           []interface{}
 	DebugfInTemplate     string
@@ -46,11 +46,11 @@ func (m *mockZapSugaredLogger) Sync() error {
 	return m.SyncOutError
 }
 
-func (m *mockZapSugaredLogger) Desugar() *log.Logger {
+func (m *mockZapSugaredLogger) Desugar() *zaplog.Logger {
 	return m.DesugarOutLogger
 }
 
-func (m *mockZapSugaredLogger) With(args ...interface{}) *log.SugaredLogger {
+func (m *mockZapSugaredLogger) With(args ...interface{}) *zaplog.SugaredLogger {
 	m.WithInArgs = args
 	return m.WithOutSugaredLogger
 }
@@ -164,7 +164,7 @@ func TestNewZap(t *testing.T) {
 }
 
 func TestZapWith(t *testing.T) {
-	zlogger := log.NewNop()
+	zlogger := zaplog.NewNop()
 
 	tests := []struct {
 		name                 string
@@ -207,41 +207,41 @@ func TestZapWith(t *testing.T) {
 func TestZapGetLevel(t *testing.T) {
 	tests := []struct {
 		name          string
-		config        *log.Config
+		config        *zaplog.Config
 		expectedLevel Level
 	}{
 		{
 			name: "Debug",
-			config: &log.Config{
-				Level: log.NewAtomicLevelAt(core.DebugLevel),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevelAt(zapcore.DebugLevel),
 			},
 			expectedLevel: LevelDebug,
 		},
 		{
 			name: "Info",
-			config: &log.Config{
-				Level: log.NewAtomicLevelAt(core.InfoLevel),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevelAt(zapcore.InfoLevel),
 			},
 			expectedLevel: LevelInfo,
 		},
 		{
 			name: "Warn",
-			config: &log.Config{
-				Level: log.NewAtomicLevelAt(core.WarnLevel),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevelAt(zapcore.WarnLevel),
 			},
 			expectedLevel: LevelWarn,
 		},
 		{
 			name: "Error",
-			config: &log.Config{
-				Level: log.NewAtomicLevelAt(core.ErrorLevel),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevelAt(zapcore.ErrorLevel),
 			},
 			expectedLevel: LevelError,
 		},
 		{
 			name: "Unsupported",
-			config: &log.Config{
-				Level: log.NewAtomicLevelAt(core.FatalLevel),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevelAt(zapcore.FatalLevel),
 			},
 			expectedLevel: LevelNone,
 		},
@@ -263,41 +263,41 @@ func TestZapGetLevel(t *testing.T) {
 func TestZapSetLevel(t *testing.T) {
 	tests := []struct {
 		name          string
-		config        *log.Config
+		config        *zaplog.Config
 		level         string
-		expectedLevel core.Level
+		expectedLevel zapcore.Level
 	}{
 		{
 			name: "Debug",
-			config: &log.Config{
-				Level: log.NewAtomicLevel(),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevel(),
 			},
 			level:         "debug",
-			expectedLevel: core.DebugLevel,
+			expectedLevel: zapcore.DebugLevel,
 		},
 		{
 			name: "Info",
-			config: &log.Config{
-				Level: log.NewAtomicLevel(),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevel(),
 			},
 			level:         "info",
-			expectedLevel: core.InfoLevel,
+			expectedLevel: zapcore.InfoLevel,
 		},
 		{
 			name: "Warn",
-			config: &log.Config{
-				Level: log.NewAtomicLevel(),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevel(),
 			},
 			level:         "warn",
-			expectedLevel: core.WarnLevel,
+			expectedLevel: zapcore.WarnLevel,
 		},
 		{
 			name: "Error",
-			config: &log.Config{
-				Level: log.NewAtomicLevel(),
+			config: &zaplog.Config{
+				Level: zaplog.NewAtomicLevel(),
 			},
 			level:         "error",
-			expectedLevel: core.ErrorLevel,
+			expectedLevel: zapcore.ErrorLevel,
 		},
 	}
 

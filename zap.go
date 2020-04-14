@@ -3,25 +3,25 @@ package log
 import (
 	"strings"
 
-	log "go.uber.org/zap"
-	core "go.uber.org/zap/zapcore"
+	zaplog "go.uber.org/zap"
+	zapcore "go.uber.org/zap/zapcore"
 )
 
 const (
-	instanceCallerSkip = 1
-	// singletonCallerSkip = 2
+	instanceCallerSkip  = 1
+	singletonCallerSkip = 2
 )
 
 // zapLogger is an interface for zap.Logger struct.
 type zapLogger interface {
-	Sugar() *log.SugaredLogger
+	Sugar() *zaplog.SugaredLogger
 }
 
 // zapSugaredLogger is an interface for zap.SugaredLogger struct.
 type zapSugaredLogger interface {
 	Sync() error
-	Desugar() *log.Logger
-	With(...interface{}) *log.SugaredLogger
+	Desugar() *zaplog.Logger
+	With(...interface{}) *zaplog.SugaredLogger
 	Debugw(string, ...interface{})
 	Debugf(string, ...interface{})
 	Infow(string, ...interface{})
@@ -34,20 +34,20 @@ type zapSugaredLogger interface {
 
 // zap is an implementation of Logger using zap.
 type zap struct {
-	config        *log.Config
+	config        *zaplog.Config
 	logger        zapLogger
 	sugaredLogger zapSugaredLogger
 }
 
 // NewZap creates a new logger based on zap logger.
 func NewZap(opts Options) Logger {
-	config := log.NewProductionConfig()
+	config := zaplog.NewProductionConfig()
 	config.EncoderConfig.MessageKey = "message"
 	config.EncoderConfig.LevelKey = "level"
 	config.EncoderConfig.TimeKey = "timestamp"
 	config.EncoderConfig.NameKey = "logger"
 	config.EncoderConfig.CallerKey = "caller"
-	config.EncoderConfig.EncodeTime = core.RFC3339NanoTimeEncoder
+	config.EncoderConfig.EncodeTime = zapcore.RFC3339NanoTimeEncoder
 	config.OutputPaths = []string{"stdout"}
 	config.InitialFields = make(map[string]interface{})
 
@@ -65,19 +65,19 @@ func NewZap(opts Options) Logger {
 
 	switch strings.ToLower(opts.Level) {
 	case "debug":
-		config.Level = log.NewAtomicLevelAt(core.DebugLevel)
+		config.Level = zaplog.NewAtomicLevelAt(zapcore.DebugLevel)
 	case "": // default
 		fallthrough
 	case "info":
-		config.Level = log.NewAtomicLevelAt(core.InfoLevel)
+		config.Level = zaplog.NewAtomicLevelAt(zapcore.InfoLevel)
 	case "warn":
-		config.Level = log.NewAtomicLevelAt(core.WarnLevel)
+		config.Level = zaplog.NewAtomicLevelAt(zapcore.WarnLevel)
 	case "error":
-		config.Level = log.NewAtomicLevelAt(core.ErrorLevel)
+		config.Level = zaplog.NewAtomicLevelAt(zapcore.ErrorLevel)
 	case "none":
 		fallthrough
 	default:
-		config.Level = log.NewAtomicLevelAt(core.Level(99))
+		config.Level = zaplog.NewAtomicLevelAt(zapcore.Level(99))
 	}
 
 	switch opts.Format {
@@ -88,8 +88,8 @@ func NewZap(opts Options) Logger {
 	}
 
 	logger, _ := config.Build(
-		log.AddCaller(),
-		log.AddCallerSkip(instanceCallerSkip),
+		zaplog.AddCaller(),
+		zaplog.AddCallerSkip(instanceCallerSkip),
 	)
 
 	return &zap{
@@ -114,13 +114,13 @@ func (z *zap) With(kv ...interface{}) Logger {
 // GetLevel returns the current logging level.
 func (z *zap) GetLevel() Level {
 	switch z.config.Level.Level() {
-	case core.DebugLevel:
+	case zapcore.DebugLevel:
 		return LevelDebug
-	case core.InfoLevel:
+	case zapcore.InfoLevel:
 		return LevelInfo
-	case core.WarnLevel:
+	case zapcore.WarnLevel:
 		return LevelWarn
-	case core.ErrorLevel:
+	case zapcore.ErrorLevel:
 		return LevelError
 	default:
 		return LevelNone
@@ -131,13 +131,13 @@ func (z *zap) GetLevel() Level {
 func (z *zap) SetLevel(level string) {
 	switch strings.ToLower(level) {
 	case "debug":
-		z.config.Level.SetLevel(core.DebugLevel)
+		z.config.Level.SetLevel(zapcore.DebugLevel)
 	case "info":
-		z.config.Level.SetLevel(core.InfoLevel)
+		z.config.Level.SetLevel(zapcore.InfoLevel)
 	case "warn":
-		z.config.Level.SetLevel(core.WarnLevel)
+		z.config.Level.SetLevel(zapcore.WarnLevel)
 	case "error":
-		z.config.Level.SetLevel(core.ErrorLevel)
+		z.config.Level.SetLevel(zapcore.ErrorLevel)
 	}
 }
 
