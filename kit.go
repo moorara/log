@@ -13,7 +13,7 @@ const (
 	// singletonCallerDepth = 8
 )
 
-// kit is an implementation of Logger using go-kit
+// kit is an implementation of Logger using go-kit.
 type kit struct {
 	level  Level
 	base   log.Logger
