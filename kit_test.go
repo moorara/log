@@ -340,7 +340,6 @@ func TestKitLog(t *testing.T) {
 		mockKitLogger *mockKitLogger
 		message       string
 		kv            []interface{}
-		expectedError error
 		expectedKV    []interface{}
 	}{
 		{
@@ -348,17 +347,15 @@ func TestKitLog(t *testing.T) {
 			mockKitLogger: &mockKitLogger{
 				LogOutError: errors.New("log error"),
 			},
-			message:       "operation failed",
-			kv:            []interface{}{"reason", "no capacity"},
-			expectedError: errors.New("log error"),
-			expectedKV:    []interface{}{"message", "operation failed", "reason", "no capacity"},
+			message:    "operation failed",
+			kv:         []interface{}{"reason", "no capacity"},
+			expectedKV: []interface{}{"message", "operation failed", "reason", "no capacity"},
 		},
 		{
 			name:          "Success",
 			mockKitLogger: &mockKitLogger{},
 			message:       "operation succeeded",
 			kv:            []interface{}{"operation", "test"},
-			expectedError: nil,
 			expectedKV:    []interface{}{"message", "operation succeeded", "operation", "test"},
 		},
 	}
@@ -405,7 +402,6 @@ func TestKitLogf(t *testing.T) {
 		mockKitLogger *mockKitLogger
 		format        string
 		args          []interface{}
-		expectedError error
 		expectedKV    []interface{}
 	}{
 		{
@@ -413,17 +409,15 @@ func TestKitLogf(t *testing.T) {
 			mockKitLogger: &mockKitLogger{
 				LogOutError: errors.New("log error"),
 			},
-			format:        "operation failed: %s",
-			args:          []interface{}{"no capacity"},
-			expectedError: errors.New("log error"),
-			expectedKV:    []interface{}{"message", "operation failed: no capacity"},
+			format:     "operation failed: %s",
+			args:       []interface{}{"no capacity"},
+			expectedKV: []interface{}{"message", "operation failed: no capacity"},
 		},
 		{
 			name:          "Success",
 			mockKitLogger: &mockKitLogger{},
 			format:        "operation succeeded: %s",
 			args:          []interface{}{"test"},
-			expectedError: nil,
 			expectedKV:    []interface{}{"message", "operation succeeded: test"},
 		},
 	}
@@ -471,9 +465,9 @@ func TestKitClose(t *testing.T) {
 		expectedError error
 	}{
 		{
-			"NoError",
-			&kit{},
-			nil,
+			name:          "NoError",
+			logger:        &kit{},
+			expectedError: nil,
 		},
 	}
 
