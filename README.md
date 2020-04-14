@@ -10,10 +10,89 @@ This package can be used for production-ready logging in Go applications.
 It hides the complexity of configuring and using the state-of-the-arts loggers
 by providing a **single interface** that is _easy-to-use_ and _hard-to-misuse_!
 
-## Supported Loggers
+## Quick Start
 
-  - [zap](https://github.com/uber-go/zap)
-  - [go-kit](https://github.com/go-kit/kit/tree/master/log)
+You can either log using an _instance_ logger or the _singleton_ logger.
+After creating an instance logger, you need to set the singleton logger using the `SetSingleton` method once.
+The instance logger can be further used to create more contextualized loggers as the children of the root logger.
+
+### [zap](https://github.com/uber-go/zap)
+
+```go
+package main
+
+import "github.com/moorara/log"
+
+func main() {
+  // Creating a zap logger
+  logger := log.NewZap(log.Options{
+    Name:        "my-service",
+    Environment: "production",
+    Region:      "us-east-1",
+  })
+
+  // Initializing the singleton logger
+  log.SetSingleton(logger)
+
+  // Add more fields to the logger
+  logger = logger.With("version", "0.1.0")
+
+  // Logging using the singleton logger
+  log.Infof("starting server on port %d ...", 8080)
+
+  // Logging using the contextualized logger
+  logger.Info("request received.",
+    "tenantId", "aaaaaaaa",
+    "requestId", "bbbbbbbb",
+  )
+}
+```
+
+Output:
+
+```json
+{"level":"info","timestamp":"2020-04-14T00:29:23.620707-04:00","caller":"example/main.go:20","message":"starting server on port 8080 ...","environment":"production","logger":"my-service","region":"us-east-1"}
+{"level":"info","timestamp":"2020-04-14T00:29:23.620867-04:00","caller":"example/main.go:23","message":"request received.","environment":"production","logger":"my-service","region":"us-east-1","version":"0.1.0","tenantId":"aaaaaaaa","requestId":"bbbbbbbb"}
+```
+
+### [go-kit](https://github.com/go-kit/kit/tree/master/log)
+
+```go
+package main
+
+import "github.com/moorara/log"
+
+func main() {
+  // Creating a kit logger
+  logger := log.NewKit(log.Options{
+    Name:        "my-service",
+    Environment: "production",
+    Region:      "us-east-1",
+  })
+
+  // Initializing the singleton logger
+  log.SetSingleton(logger)
+
+  // Add more fields to the logger
+  logger = logger.With("version", "0.1.0")
+
+  // Logging using the singleton logger
+  log.Infof("starting server on port %d ...", 8080)
+
+  // Logging using the contextualized logger
+  logger.Info("request received.",
+    "tenantId", "aaaaaaaa",
+    "requestId", "bbbbbbbb",
+  )
+}
+```
+
+Output:
+
+```json
+{"caller":"main.go:20","environment":"production","level":"info","logger":"my-service","message":"starting server on port 8080 ...","region":"us-east-1","timestamp":"2020-04-14T00:31:05.352898-04:00"}
+{"caller":"main.go:23","environment":"production","level":"info","logger":"my-service","message":"request received.","region":"us-east-1","requestId":"bbbbbbbb","tenantId":"aaaaaaaa","timestamp":"2020-04-14T00:31:05.353198-04:00","version":"0.1.0"}
+```
 
 
 [godoc-url]: https://pkg.go.dev/github.com/moorara/log
