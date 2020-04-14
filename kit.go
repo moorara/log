@@ -4,40 +4,40 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/level"
+	kitlog "github.com/go-kit/kit/log"
+	kitlevel "github.com/go-kit/kit/log/level"
 )
 
 const (
-	instanceCallerDepth = 7
-	// singletonCallerDepth = 8
+	instanceCallerDepth  = 7
+	singletonCallerDepth = 8
 )
 
 // kit is an implementation of Logger using go-kit.
 type kit struct {
 	level  Level
-	base   log.Logger
-	logger *log.SwapLogger
+	base   kitlog.Logger
+	logger *kitlog.SwapLogger
 }
 
-func createBaseLogger(opts Options) log.Logger {
-	var base log.Logger
+func createBaseLogger(opts Options) kitlog.Logger {
+	var base kitlog.Logger
 
 	switch opts.Format {
 	case FormatConsole:
-		base = log.NewLogfmtLogger(os.Stdout)
+		base = kitlog.NewLogfmtLogger(os.Stdout)
 	case FormatJSON:
 		fallthrough
 	default:
-		base = log.NewJSONLogger(os.Stdout)
+		base = kitlog.NewJSONLogger(os.Stdout)
 	}
 
 	// This is not required since SwapLogger uses a SyncLogger and can be used concurrently
-	// base = log.NewSyncLogger(base)
+	// base = kitlog.NewSyncLogger(base)
 
 	context := []interface{}{
-		"timestamp", log.DefaultTimestamp,
-		"caller", log.Caller(instanceCallerDepth),
+		"timestamp", kitlog.DefaultTimestamp,
+		"caller", kitlog.Caller(instanceCallerDepth),
 	}
 
 	if opts.Name != "" {
@@ -52,23 +52,23 @@ func createBaseLogger(opts Options) log.Logger {
 		context = append(context, "region", opts.Region)
 	}
 
-	base = log.With(base, context...)
+	base = kitlog.With(base, context...)
 
 	return base
 }
 
-func createFilteredLogger(base log.Logger, l Level) log.Logger {
+func createFilteredLogger(base kitlog.Logger, l Level) kitlog.Logger {
 	switch l {
 	case LevelDebug:
-		return level.NewFilter(base, level.AllowDebug())
+		return kitlevel.NewFilter(base, kitlevel.AllowDebug())
 	case LevelInfo:
-		return level.NewFilter(base, level.AllowInfo())
+		return kitlevel.NewFilter(base, kitlevel.AllowInfo())
 	case LevelWarn:
-		return level.NewFilter(base, level.AllowWarn())
+		return kitlevel.NewFilter(base, kitlevel.AllowWarn())
 	case LevelError:
-		return level.NewFilter(base, level.AllowError())
+		return kitlevel.NewFilter(base, kitlevel.AllowError())
 	case LevelNone:
-		return level.NewFilter(base, level.AllowNone())
+		return kitlevel.NewFilter(base, kitlevel.AllowNone())
 	default:
 		return base
 	}
@@ -78,7 +78,7 @@ func createFilteredLogger(base log.Logger, l Level) log.Logger {
 func NewKit(opts Options) Logger {
 	level := parseLevel(opts.Level)
 	base := createBaseLogger(opts)
-	logger := new(log.SwapLogger)
+	logger := new(kitlog.SwapLogger)
 
 	filtered := createFilteredLogger(base, level)
 	logger.Swap(filtered)
@@ -94,8 +94,8 @@ func NewKit(opts Options) Logger {
 // This can be used for creating a contextualized logger.
 func (k *kit) With(kv ...interface{}) Logger {
 	level := k.level
-	base := log.With(k.base, kv...)
-	logger := new(log.SwapLogger)
+	base := kitlog.With(k.base, kv...)
+	logger := new(kitlog.SwapLogger)
 
 	filtered := createFilteredLogger(base, level)
 	logger.Swap(filtered)
@@ -122,49 +122,49 @@ func (k *kit) SetLevel(level string) {
 // Debug logs a message and a list of key-value pairs in debug level.
 func (k *kit) Debug(message string, kv ...interface{}) {
 	kv = append(kv, "message", message)
-	_ = level.Debug(k.logger).Log(kv...)
+	_ = kitlevel.Debug(k.logger).Log(kv...)
 }
 
 // Debugf formats and logs a message in debug level.
 // It uses fmt.Sprintf() to log a message.
 func (k *kit) Debugf(format string, v ...interface{}) {
-	_ = level.Debug(k.logger).Log("message", fmt.Sprintf(format, v...))
+	_ = kitlevel.Debug(k.logger).Log("message", fmt.Sprintf(format, v...))
 }
 
 // Info logs a message and a list of key-value pairs in info level.
 func (k *kit) Info(message string, kv ...interface{}) {
 	kv = append(kv, "message", message)
-	_ = level.Info(k.logger).Log(kv...)
+	_ = kitlevel.Info(k.logger).Log(kv...)
 }
 
 // Infof formats and logs a message in info level.
 // It uses fmt.Sprintf() to log a message.
 func (k *kit) Infof(format string, v ...interface{}) {
-	_ = level.Info(k.logger).Log("message", fmt.Sprintf(format, v...))
+	_ = kitlevel.Info(k.logger).Log("message", fmt.Sprintf(format, v...))
 }
 
 // Warn logs a message and a list of key-value pairs in warn level.
 func (k *kit) Warn(message string, kv ...interface{}) {
 	kv = append(kv, "message", message)
-	_ = level.Warn(k.logger).Log(kv...)
+	_ = kitlevel.Warn(k.logger).Log(kv...)
 }
 
 // Warnf formats and logs a message in warn level.
 // It uses fmt.Sprintf() to log a message.
 func (k *kit) Warnf(format string, v ...interface{}) {
-	_ = level.Warn(k.logger).Log("message", fmt.Sprintf(format, v...))
+	_ = kitlevel.Warn(k.logger).Log("message", fmt.Sprintf(format, v...))
 }
 
 // Error logs a message and a list of key-value pairs in error level.
 func (k *kit) Error(message string, kv ...interface{}) {
 	kv = append(kv, "message", message)
-	_ = level.Error(k.logger).Log(kv...)
+	_ = kitlevel.Error(k.logger).Log(kv...)
 }
 
 // Errorf formats and logs a message in error level.
 // It uses fmt.Sprintf() to log a message.
 func (k *kit) Errorf(format string, v ...interface{}) {
-	_ = level.Error(k.logger).Log("message", fmt.Sprintf(format, v...))
+	_ = kitlevel.Error(k.logger).Log("message", fmt.Sprintf(format, v...))
 }
 
 // Close flushes the logger.

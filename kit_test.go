@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/go-kit/kit/log"
+	kitlog "github.com/go-kit/kit/log"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -68,37 +68,37 @@ func TestCreateBaseLogger(t *testing.T) {
 func TestCreateFilteredLogger(t *testing.T) {
 	tests := []struct {
 		name  string
-		base  log.Logger
+		base  kitlog.Logger
 		level Level
 	}{
 		{
 			"None",
-			log.NewNopLogger(),
+			kitlog.NewNopLogger(),
 			LevelNone,
 		},
 		{
 			"Error",
-			log.NewNopLogger(),
+			kitlog.NewNopLogger(),
 			LevelError,
 		},
 		{
 			"Warn",
-			log.NewNopLogger(),
+			kitlog.NewNopLogger(),
 			LevelWarn,
 		},
 		{
 			"Info",
-			log.NewNopLogger(),
+			kitlog.NewNopLogger(),
 			LevelInfo,
 		},
 		{
 			"Debug",
-			log.NewNopLogger(),
+			kitlog.NewNopLogger(),
 			LevelDebug,
 		},
 		{
 			"InvalidLevel",
-			log.NewNopLogger(),
+			kitlog.NewNopLogger(),
 			Level(99),
 		},
 	}
@@ -198,8 +198,8 @@ func TestKitWith(t *testing.T) {
 			"OK",
 			&kit{
 				level:  LevelInfo,
-				base:   log.NewNopLogger(),
-				logger: &log.SwapLogger{},
+				base:   kitlog.NewNopLogger(),
+				logger: &kitlog.SwapLogger{},
 			},
 			[]interface{}{
 				"version", "0.1.0",
@@ -281,8 +281,8 @@ func TestKitSetLevel(t *testing.T) {
 		{
 			"None",
 			&kit{
-				base:   log.NewNopLogger(),
-				logger: &log.SwapLogger{},
+				base:   kitlog.NewNopLogger(),
+				logger: &kitlog.SwapLogger{},
 			},
 			"none",
 			LevelNone,
@@ -290,8 +290,8 @@ func TestKitSetLevel(t *testing.T) {
 		{
 			"Error",
 			&kit{
-				base:   log.NewNopLogger(),
-				logger: &log.SwapLogger{},
+				base:   kitlog.NewNopLogger(),
+				logger: &kitlog.SwapLogger{},
 			},
 			"error",
 			LevelError,
@@ -299,8 +299,8 @@ func TestKitSetLevel(t *testing.T) {
 		{
 			"Warn",
 			&kit{
-				base:   log.NewNopLogger(),
-				logger: &log.SwapLogger{},
+				base:   kitlog.NewNopLogger(),
+				logger: &kitlog.SwapLogger{},
 			},
 			"warn",
 			LevelWarn,
@@ -308,8 +308,8 @@ func TestKitSetLevel(t *testing.T) {
 		{
 			"Info",
 			&kit{
-				base:   log.NewNopLogger(),
-				logger: &log.SwapLogger{},
+				base:   kitlog.NewNopLogger(),
+				logger: &kitlog.SwapLogger{},
 			},
 			"info",
 			LevelInfo,
@@ -317,8 +317,8 @@ func TestKitSetLevel(t *testing.T) {
 		{
 			"Debug",
 			&kit{
-				base:   log.NewNopLogger(),
-				logger: &log.SwapLogger{},
+				base:   kitlog.NewNopLogger(),
+				logger: &kitlog.SwapLogger{},
 			},
 			"debug",
 			LevelDebug,
@@ -362,7 +362,7 @@ func TestKitLog(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			kl := &kit{logger: &log.SwapLogger{}}
+			kl := &kit{logger: &kitlog.SwapLogger{}}
 			kl.logger.Swap(tc.mockKitLogger)
 
 			t.Run("Debug", func(t *testing.T) {
@@ -424,7 +424,7 @@ func TestKitLogf(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			kl := &kit{logger: &log.SwapLogger{}}
+			kl := &kit{logger: &kitlog.SwapLogger{}}
 			kl.logger.Swap(tc.mockKitLogger)
 
 			t.Run("Debugf", func(t *testing.T) {
