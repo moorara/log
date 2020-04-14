@@ -1,5 +1,9 @@
 // Package log provides leveled structured loggers.
 // It hides the complexity of configuring and using the state-of-the-arts loggers by providing a single interface.
+//
+// You can either log using an instance logger or the singleton logger.
+// After creating an instance logger, you need to set the singleton logger using the SetSingleton method once.
+// The instance logger can be further used to create more contextualized loggers as the children of the root logger.
 package log
 
 import "strings"
