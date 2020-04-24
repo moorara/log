@@ -41,7 +41,7 @@ func main() {
   // Logging using the singleton logger
   log.Infof("starting server on port %d ...", 8080)
 
-  // Logging using the contextualized logger
+  // Logging using the instance logger
   logger.Info("request received.",
     "tenantId", "aaaaaaaa",
     "requestId", "bbbbbbbb",
@@ -81,7 +81,7 @@ func main() {
   // Logging using the singleton logger
   log.Infof("starting server on port %d ...", 8080)
 
-  // Logging using the contextualized logger
+  // Logging using the instance logger
   logger.Info("request received.",
     "tenantId", "aaaaaaaa",
     "requestId", "bbbbbbbb",
