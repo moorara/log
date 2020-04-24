@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.1.1](https://github.com/moorara/log/tree/v0.1.1) (2020-04-24)
+
+[Full Changelog](https://github.com/moorara/log/compare/v0.1.0...v0.1.1)
+
+**Merged pull requests:**
+
+- Add Version and Tags to Options [\#10](https://github.com/moorara/log/pull/10) ([moorara](https://github.com/moorara))
+
 ## [v0.1.0](https://github.com/moorara/log/tree/v0.1.0) (2020-04-14)
 
 [Full Changelog](https://github.com/moorara/log/compare/172b7dc109ef2bb5a329cde78e46fb9cc1e30ee0...v0.1.0)
