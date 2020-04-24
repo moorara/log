@@ -44,12 +44,20 @@ func createBaseLogger(opts Options) kitlog.Logger {
 		context = append(context, "logger", opts.Name)
 	}
 
+	if opts.Version != "" {
+		context = append(context, "version", opts.Version)
+	}
+
 	if opts.Environment != "" {
 		context = append(context, "environment", opts.Environment)
 	}
 
 	if opts.Region != "" {
 		context = append(context, "region", opts.Region)
+	}
+
+	for k, v := range opts.Tags {
+		context = append(context, k, v)
 	}
 
 	base = kitlog.With(base, context...)

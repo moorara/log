@@ -49,10 +49,13 @@ func parseLevel(level string) Level {
 }
 
 // Options are optional configurations for creating a logger.
+// Level can be "debug", "info", "warn", "error", or "none" (case-insensitive).
 type Options struct {
 	Name        string
+	Version     string
 	Environment string
 	Region      string
+	Tags        map[string]string
 	Level       string
 	Format      Format
 }
