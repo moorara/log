@@ -24,28 +24,28 @@ package main
 import "github.com/moorara/log"
 
 func main() {
-	// Creating a zap logger
-	logger := log.NewZap(log.Options{
-		Name:        "my-service",
-		Version:     "0.1.0",
-		Environment: "production",
-		Region:      "us-east-1",
-		Tags: map[string]string{
-			"domain": "auth",
-		},
-	})
+  // Creating a zap logger
+  logger := log.NewZap(log.Options{
+    Name:        "my-service",
+    Version:     "0.1.0",
+    Environment: "production",
+    Region:      "us-east-1",
+    Tags: map[string]string{
+      "domain": "auth",
+    },
+  })
 
-	// Initializing the singleton logger
-	log.SetSingleton(logger)
+  // Initializing the singleton logger
+  log.SetSingleton(logger)
 
-	// Logging using the singleton logger
-	log.Infof("starting server on port %d ...", 8080)
+  // Logging using the singleton logger
+  log.Infof("starting server on port %d ...", 8080)
 
-	// Logging using the contextualized logger
-	logger.Info("request received.",
-		"tenantId", "aaaaaaaa",
-		"requestId", "bbbbbbbb",
-	)
+  // Logging using the contextualized logger
+  logger.Info("request received.",
+    "tenantId", "aaaaaaaa",
+    "requestId", "bbbbbbbb",
+  )
 }
 ```
 
@@ -64,28 +64,28 @@ package main
 import "github.com/moorara/log"
 
 func main() {
-	// Creating a kit logger
-	logger := log.NewKit(log.Options{
-		Name:        "my-service",
-		Version:     "0.1.0",
-		Environment: "production",
-		Region:      "us-east-1",
-		Tags: map[string]string{
-			"domain": "auth",
-		},
-	})
+  // Creating a kit logger
+  logger := log.NewKit(log.Options{
+    Name:        "my-service",
+    Version:     "0.1.0",
+    Environment: "production",
+    Region:      "us-east-1",
+    Tags: map[string]string{
+      "domain": "auth",
+    },
+  })
 
-	// Initializing the singleton logger
-	log.SetSingleton(logger)
+  // Initializing the singleton logger
+  log.SetSingleton(logger)
 
-	// Logging using the singleton logger
-	log.Infof("starting server on port %d ...", 8080)
+  // Logging using the singleton logger
+  log.Infof("starting server on port %d ...", 8080)
 
-	// Logging using the contextualized logger
-	logger.Info("request received.",
-		"tenantId", "aaaaaaaa",
-		"requestId", "bbbbbbbb",
-	)
+  // Logging using the contextualized logger
+  logger.Info("request received.",
+    "tenantId", "aaaaaaaa",
+    "requestId", "bbbbbbbb",
+  )
 }
 ```
 
