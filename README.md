@@ -24,35 +24,36 @@ package main
 import "github.com/moorara/log"
 
 func main() {
-  // Creating a zap logger
-  logger := log.NewZap(log.Options{
-    Name:        "my-service",
-    Environment: "production",
-    Region:      "us-east-1",
-  })
+	// Creating a zap logger
+	logger := log.NewZap(log.Options{
+		Name:        "my-service",
+		Version:     "0.1.0",
+		Environment: "production",
+		Region:      "us-east-1",
+		Tags: map[string]string{
+			"domain": "auth",
+		},
+	})
 
-  // Initializing the singleton logger
-  log.SetSingleton(logger)
+	// Initializing the singleton logger
+	log.SetSingleton(logger)
 
-  // Add more fields to the logger
-  logger = logger.With("version", "0.1.0")
+	// Logging using the singleton logger
+	log.Infof("starting server on port %d ...", 8080)
 
-  // Logging using the singleton logger
-  log.Infof("starting server on port %d ...", 8080)
-
-  // Logging using the contextualized logger
-  logger.Info("request received.",
-    "tenantId", "aaaaaaaa",
-    "requestId", "bbbbbbbb",
-  )
+	// Logging using the contextualized logger
+	logger.Info("request received.",
+		"tenantId", "aaaaaaaa",
+		"requestId", "bbbbbbbb",
+	)
 }
 ```
 
-Output:
+Output logs from stdout:
 
 ```json
-{"level":"info","timestamp":"2020-04-14T00:29:23.620707-04:00","caller":"example/main.go:20","message":"starting server on port 8080 ...","environment":"production","logger":"my-service","region":"us-east-1"}
-{"level":"info","timestamp":"2020-04-14T00:29:23.620867-04:00","caller":"example/main.go:23","message":"request received.","environment":"production","logger":"my-service","region":"us-east-1","version":"0.1.0","tenantId":"aaaaaaaa","requestId":"bbbbbbbb"}
+{"level":"info","timestamp":"2020-04-24T12:39:04.506116-04:00","caller":"example/main.go:21","message":"starting server on port 8080 ...","domain":"auth","environment":"production","logger":"my-service","region":"us-east-1","version":"0.1.0"}
+{"level":"info","timestamp":"2020-04-24T12:39:04.506268-04:00","caller":"example/main.go:24","message":"request received.","domain":"auth","environment":"production","logger":"my-service","region":"us-east-1","version":"0.1.0","tenantId":"aaaaaaaa","requestId":"bbbbbbbb"}
 ```
 
 ### [go-kit](https://github.com/go-kit/kit/tree/master/log)
@@ -63,35 +64,36 @@ package main
 import "github.com/moorara/log"
 
 func main() {
-  // Creating a kit logger
-  logger := log.NewKit(log.Options{
-    Name:        "my-service",
-    Environment: "production",
-    Region:      "us-east-1",
-  })
+	// Creating a kit logger
+	logger := log.NewKit(log.Options{
+		Name:        "my-service",
+		Version:     "0.1.0",
+		Environment: "production",
+		Region:      "us-east-1",
+		Tags: map[string]string{
+			"domain": "auth",
+		},
+	})
 
-  // Initializing the singleton logger
-  log.SetSingleton(logger)
+	// Initializing the singleton logger
+	log.SetSingleton(logger)
 
-  // Add more fields to the logger
-  logger = logger.With("version", "0.1.0")
+	// Logging using the singleton logger
+	log.Infof("starting server on port %d ...", 8080)
 
-  // Logging using the singleton logger
-  log.Infof("starting server on port %d ...", 8080)
-
-  // Logging using the contextualized logger
-  logger.Info("request received.",
-    "tenantId", "aaaaaaaa",
-    "requestId", "bbbbbbbb",
-  )
+	// Logging using the contextualized logger
+	logger.Info("request received.",
+		"tenantId", "aaaaaaaa",
+		"requestId", "bbbbbbbb",
+	)
 }
 ```
 
-Output:
+Output logs from stdout:
 
 ```json
-{"caller":"main.go:20","environment":"production","level":"info","logger":"my-service","message":"starting server on port 8080 ...","region":"us-east-1","timestamp":"2020-04-14T00:31:05.352898-04:00"}
-{"caller":"main.go:23","environment":"production","level":"info","logger":"my-service","message":"request received.","region":"us-east-1","requestId":"bbbbbbbb","tenantId":"aaaaaaaa","timestamp":"2020-04-14T00:31:05.353198-04:00","version":"0.1.0"}
+{"caller":"main.go:21","domain":"auth","environment":"production","level":"info","logger":"my-service","message":"starting server on port 8080 ...","region":"us-east-1","timestamp":"2020-04-24T12:39:53.05221-04:00","version":"0.1.0"}
+{"caller":"main.go:24","domain":"auth","environment":"production","level":"info","logger":"my-service","message":"request received.","region":"us-east-1","requestId":"bbbbbbbb","tenantId":"aaaaaaaa","timestamp":"2020-04-24T12:39:53.052529-04:00","version":"0.1.0"}
 ```
 
 
