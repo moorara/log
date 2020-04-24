@@ -55,12 +55,20 @@ func NewZap(opts Options) Logger {
 		config.InitialFields["logger"] = opts.Name
 	}
 
+	if opts.Version != "" {
+		config.InitialFields["version"] = opts.Version
+	}
+
 	if opts.Environment != "" {
 		config.InitialFields["environment"] = opts.Environment
 	}
 
 	if opts.Region != "" {
 		config.InitialFields["region"] = opts.Region
+	}
+
+	for k, v := range opts.Tags {
+		config.InitialFields[k] = v
 	}
 
 	switch strings.ToLower(opts.Level) {

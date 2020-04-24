@@ -25,21 +25,19 @@ func TestCreateBaseLogger(t *testing.T) {
 		opts Options
 	}{
 		{
-			"NoOption",
+			"Default",
 			Options{},
 		},
 		{
-			"WithName",
+			"Production",
 			Options{
-				Name: "test",
-			},
-		},
-		{
-			"WithMetadata",
-			Options{
-				Name:        "test",
-				Environment: "local",
-				Region:      "local",
+				Name:        "my-service",
+				Version:     "0.1.0",
+				Environment: "production",
+				Region:      "ca-central-1",
+				Tags: map[string]string{
+					"domain": "auth",
+				},
 			},
 		},
 		{
@@ -118,15 +116,19 @@ func TestNewKit(t *testing.T) {
 		opts Options
 	}{
 		{
-			"NoOption",
+			"Default",
 			Options{},
 		},
 		{
-			"WithMetadata",
+			"Production",
 			Options{
-				Name:        "test",
-				Environment: "local",
-				Region:      "local",
+				Name:        "my-service",
+				Version:     "0.1.0",
+				Environment: "production",
+				Region:      "ca-central-1",
+				Tags: map[string]string{
+					"domain": "auth",
+				},
 			},
 		},
 		{
