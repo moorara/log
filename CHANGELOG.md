@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.1.2](https://github.com/moorara/log/tree/v0.1.2) (2020-04-24)
+
+[Full Changelog](https://github.com/moorara/log/compare/v0.1.1...v0.1.2)
+
+**Merged pull requests:**
+
+- Update README.md [\#14](https://github.com/moorara/log/pull/14) ([moorara](https://github.com/moorara))
+- Update module go.uber.org/zap to v1.15.0 [\#13](https://github.com/moorara/log/pull/13) ([renovate[bot]](https://github.com/apps/renovate))
+- README: change tabs to spaces! [\#12](https://github.com/moorara/log/pull/12) ([moorara](https://github.com/moorara))
+- Update examples [\#11](https://github.com/moorara/log/pull/11) ([moorara](https://github.com/moorara))
+
 ## [v0.1.1](https://github.com/moorara/log/tree/v0.1.1) (2020-04-24)
 
 [Full Changelog](https://github.com/moorara/log/compare/v0.1.0...v0.1.1)
