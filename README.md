@@ -98,7 +98,7 @@ Output logs from stdout:
 
 
 [godoc-url]: https://pkg.go.dev/github.com/moorara/log
-[godoc-image]: https://godoc.org/github.com/moorara/log?status.svg
+[godoc-image]: https://pkg.go.dev/badge/github.com/moorara/log
 [workflow-url]: https://github.com/moorara/log/actions
 [workflow-image]: https://github.com/moorara/log/workflows/Main/badge.svg
 [goreport-url]: https://goreportcard.com/report/github.com/moorara/log
