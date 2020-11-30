@@ -6,4 +6,4 @@ and [**pull requests**](https://github.com/moorara/log/pulls).
 ## Versioning
 
 **log** uses [semantic versioning](https://semver.org).
-All features and fixes are merged to `master` branch.
+All features and fixes are merged to `main` branch.
